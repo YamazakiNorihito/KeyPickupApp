@@ -10,7 +10,7 @@
             <Image Source="keypickup.jpg" />
         </Grid>
     </Shell.FlyoutHeader>
-    <FlyoutItem Title="鍵受取完了" Icon="moon.png">
+    <FlyoutItem Title="鍵受け取りアプリ" Icon="moon.png">
         <Tab>
             <ShellContent ContentTemplate="{DataTemplate local:KeyReceivedPage}" />
         </Tab>
