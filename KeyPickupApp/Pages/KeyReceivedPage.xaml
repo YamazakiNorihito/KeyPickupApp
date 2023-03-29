@@ -3,14 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KeyPickupApp.Pages.KeyReceivedPage"
              Title="鍵受け取りアプリ">
+
+    <Shell.TitleView>
+        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="20,10,10,20">
+            <Grid>
+                <Label Text="鍵受け取りアプリ" BackgroundColor="White" TextColor="Black" FontAttributes="Bold"/>
+            </Grid>
+        </StackLayout>
+    </Shell.TitleView>
+    
     <ContentPage.Resources>
         <Style x:Key="LabelFontStyle"
                TargetType="Label">
             <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <!--<Setter Property="Margin" Value="20,10,0,20" />-->
         </Style>
-        <Style x:Key="EntryFontStyle"
-               TargetType="Entry">
+        <Style x:Key="EntryFontStyle" TargetType="Entry">
             <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HeightRequest" Value="30" />
+        </Style>
+        <Style x:Key="RowDefinitionStyle" TargetType="RowDefinition">
+            <Setter Property="Height" Value="40" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="WidthRequest" Value="150" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BorderWidth" Value="3" />
+            <Setter Property="CornerRadius" Value="0" />
         </Style>
     </ContentPage.Resources>
     <VerticalStackLayout>
@@ -22,7 +48,7 @@
                 TextColor="Red"
                 Style="{StaticResource LabelFontStyle}"/>
 
-            <Frame  BorderColor="Gray" Padding="8" CornerRadius="5">
+            <Frame  BorderColor="Gray" Padding="8" CornerRadius="0">
                 <ScrollView VerticalScrollBarVisibility="Always"
                     HorizontalScrollBarVisibility="Always"
                     HeightRequest="350"
@@ -46,15 +72,8 @@
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
-                <Button Text="入力クリア"
-                Grid.Row="0" Grid.Column="0"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Clicked="ClearQRValuesInRowButtonClicked"/>
-                <Button Text="送信"
-                Grid.Row="0" Grid.Column="1"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+                <Button Text="入力クリア" Style="{StaticResource ButtonStyle}" TextColor="Red" BorderColor="Red" Grid.Row="0" Grid.Column="0" Clicked="ClearQRValuesInRowButtonClicked"/>
+                <Button Text="送信"       Style="{StaticResource ButtonStyle}" TextColor="Black" BorderColor="Black" Grid.Row="0" Grid.Column="1" />
             </Grid>
         </StackLayout>
     </VerticalStackLayout>

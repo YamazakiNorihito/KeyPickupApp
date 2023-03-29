@@ -4,14 +4,18 @@ namespace KeyPickupApp.Pages;
 
 public partial class KeyReceivedPage : ContentPage
 {
+    private static int QR_GIRD_MAX_ROW = 100;
 
-    public static int QR_GIRD_MAX_ROW = 100;
+    private readonly GridLength RowDefinition_Height;
 
-
-	public KeyReceivedPage()
+    public KeyReceivedPage()
 	{
 		InitializeComponent();
 
+        // Styleでいい感じにやる方法がわからなかったのでコードで頑張った
+        var rowDefinitionStyle = (Style)Resources["RowDefinitionStyle"];
+        var height = rowDefinitionStyle.Setters.Where(o => o.Property.Equals(nameof(RowDefinition.Height))).SingleOrDefault();
+        RowDefinition_Height = new GridLength(height is null ? 40 : Convert.ToInt32(height.Value));
 
         for (var i = 0; i < QR_GIRD_MAX_ROW; i++)
         {
@@ -41,7 +45,7 @@ public partial class KeyReceivedPage : ContentPage
     private void AddQrGridRow(Grid qrGrid)
     {
         // 新しい行を作成
-        var row = new RowDefinition { Height = new GridLength(50) };
+        var row = new RowDefinition { Height = RowDefinition_Height };
 
         // Gridに行を追加
         qrGrid.RowDefinitions.Add(row);
