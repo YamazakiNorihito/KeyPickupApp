@@ -14,26 +14,29 @@
         </Style>
     </ContentPage.Resources>
     <VerticalStackLayout>
-        <Label 
-            Text="100件まで同時に送信できます。"
-            Margin="20,20,15,5"
-            HorizontalOptions="Start"
-            TextColor="Red"
-            Style="{StaticResource LabelFontStyle}"/>
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label 
+                Text="100件まで同時に送信できます。"
+                Margin="20,20,15,5"
+                HorizontalOptions="Start"
+                TextColor="Red"
+                Style="{StaticResource LabelFontStyle}"/>
 
-        <ScrollView VerticalScrollBarVisibility="Always"
+            <Frame  BorderColor="Gray" Padding="8" CornerRadius="5">
+                <ScrollView VerticalScrollBarVisibility="Always"
                     HorizontalScrollBarVisibility="Always"
-                    VerticalOptions="CenterAndExpand" 
-                    HorizontalOptions="CenterAndExpand"
                     HeightRequest="350"
-                    WidthRequest="750">
-            <Grid x:Name="qrGrid" Margin="20,20,15,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="600"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
-        </ScrollView>
+                    WidthRequest="750"
+                    Margin="2,2,2,2">
+                    <Grid x:Name="qrGrid" RowSpacing="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="600"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ScrollView>
+            </Frame>
+        </StackLayout>
         <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
             <Grid Margin="20,20,15,5">
                 <Grid.RowDefinitions>
