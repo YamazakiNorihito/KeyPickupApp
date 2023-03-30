@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
 
 namespace KeyPickupApp.Pages;
@@ -38,6 +39,25 @@ public partial class KeyReceivedPage : ContentPage
         foreach(var qrEntry in qrEntries)
         {
             qrEntry.Text = string.Empty;
+        }
+
+    }
+
+    private async void SendQRValuesInRowButtonClicked(object sender, EventArgs args)
+    {
+        var popup = new KeyReceivedResultPopup();
+
+        var result = await this.ShowPopupAsync(popup);
+        if (result is bool boolResult)
+        {
+            if (boolResult)
+            {
+                // Yes was tapped
+            }
+            else
+            {
+                // No was tapped
+            }
         }
 
     }
