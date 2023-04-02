@@ -1,5 +1,4 @@
 using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Controls;
 
 namespace KeyPickupApp.Pages;
 
@@ -8,6 +7,7 @@ public partial class KeyReceivedPage : ContentPage
     private static int QR_GIRD_MAX_ROW = 100;
 
     private readonly GridLength RowDefinition_Height;
+    private List<Entry> _qrEntries = new List<Entry>();
 
     public KeyReceivedPage()
 	{
@@ -20,62 +20,39 @@ public partial class KeyReceivedPage : ContentPage
 
         for (var i = 0; i < QR_GIRD_MAX_ROW; i++)
         {
-            AddQrGridRow(qrGrid);
-        }
-    }
+            qrGrid.RowDefinitions.Add(new RowDefinition { Height = RowDefinition_Height });
 
-    private void AddRowButton_Clicked(object sender, EventArgs e)
-    {
-        AddQrGridRow(qrGrid);
+            var label = new Label { Text = "QRコード", Style = (Style)Resources["LabelFontStyle"] };
+            var entry = new Entry { Text = $"{qrGrid.RowDefinitions.Count}行2列目" };
+
+            qrGrid.Add(label, 0, qrGrid.RowDefinitions.Count - 1);
+            qrGrid.Add(entry, 1, qrGrid.RowDefinitions.Count - 1);
+
+            _qrEntries.Add(entry);
+        }
     }
 
     private void ClearQRValuesInRowButtonClicked(object sender, EventArgs args)
     {
-        // もしクリアに時間がかかるようであれば、Entryをキャッシュするしかない
-        var qrEntries = qrGrid.Children
-            .Where(o => o.GetType().Equals(typeof(Entry)))
-            .Select(q => (Entry)q);
-
-        foreach(var qrEntry in qrEntries)
-        {
+        foreach(var qrEntry in _qrEntries)
             qrEntry.Text = string.Empty;
-        }
-
     }
 
     private async void SendQRValuesInRowButtonClicked(object sender, EventArgs args)
     {
-        var popup = new KeyReceivedResultPopup();
-
-        var result = await this.ShowPopupAsync(popup);
-        if (result is bool boolResult)
+        try
         {
-            if (boolResult)
-            {
-                // Yes was tapped
-            }
-            else
-            {
-                // No was tapped
-            }
+            verticalStackLayout.IsEnabled = false;
+            activityIndicator.IsRunning = true;
+
+            var qrCodes = _qrEntries.Select(o => o.Text);
+
+            await Task.Delay(5000);
+            await this.ShowPopupAsync(new KeyReceivedResultPopup(10, 20));
+        }finally
+        {
+            activityIndicator.IsRunning = !activityIndicator.IsRunning;
+            verticalStackLayout.IsEnabled = !verticalStackLayout.IsEnabled;
         }
-
-    }
-
-    private void AddQrGridRow(Grid qrGrid)
-    {
-        // 新しい行を作成
-        var row = new RowDefinition { Height = RowDefinition_Height };
-
-        // Gridに行を追加
-        qrGrid.RowDefinitions.Add(row);
-
-        // 行に追加するコントロールを作成
-        var label = new Label { Text = "QRコード", Style = (Style)Resources["LabelFontStyle"] };
-        var entry = new Entry { Text = $"{qrGrid.RowDefinitions.Count}行2列目" };
-
-        // Gridにコントロールを追加
-        qrGrid.Add(label, 0, qrGrid.RowDefinitions.Count - 1);
-        qrGrid.Add(entry, 1, qrGrid.RowDefinitions.Count - 1);
     }
 }
