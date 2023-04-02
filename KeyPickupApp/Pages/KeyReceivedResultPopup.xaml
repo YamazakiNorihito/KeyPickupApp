@@ -1,0 +1,28 @@
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="KeyPickupApp.Pages.KeyReceivedResultPopup">
+    <VerticalStackLayout BackgroundColor="White" HeightRequest="200" WidthRequest="600"  VerticalOptions="Center" HorizontalOptions="Center">
+
+        <Grid Margin="20,50,20,20"  RowSpacing="10" ColumnSpacing="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Row="0" Grid.Column="0" Source="alert.png" HeightRequest="35" WidthRequest="35" HorizontalOptions="End" VerticalOptions="Center"/>
+            <Label Grid.Row="0" Grid.Column="1" x:Name="AlertMessage" TextColor="Red" HorizontalOptions="Start" VerticalOptions="Center" />
+
+            <Image Grid.Row="1" Grid.Column="0" Source="ok.png"  HeightRequest="40" WidthRequest="40" HorizontalOptions="End" VerticalOptions="Center"/>
+            <Label Grid.Row="1" Grid.Column="1" x:Name="OkMessage" TextColor="Black"  HorizontalOptions="Start" VerticalOptions="Center" />
+
+        </Grid>
+
+
+    </VerticalStackLayout>
+
+</toolkit:Popup>

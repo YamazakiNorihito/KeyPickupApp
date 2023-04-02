@@ -39,14 +39,15 @@
             <Setter Property="CornerRadius" Value="0" />
         </Style>
     </ContentPage.Resources>
-    <VerticalStackLayout>
-            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                <Label 
-                Text="100件まで同時に送信できます。"
-                Margin="20,20,15,5"
-                HorizontalOptions="Start"
-                TextColor="Red"
-                Style="{StaticResource LabelFontStyle}"/>
+    <VerticalStackLayout x:Name="verticalStackLayout">
+        <ActivityIndicator x:Name="activityIndicator" Color="Red" IsRunning="False" />
+        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Label 
+            Text="100件まで同時に送信できます。"
+            Margin="20,20,15,5"
+            HorizontalOptions="Start"
+            TextColor="Red"
+            Style="{StaticResource LabelFontStyle}"/>
 
             <Frame  BorderColor="Gray" Padding="8" CornerRadius="0">
                 <ScrollView VerticalScrollBarVisibility="Always"
@@ -73,7 +74,7 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
                 <Button Text="入力クリア" Style="{StaticResource ButtonStyle}" TextColor="Red" BorderColor="Red" Grid.Row="0" Grid.Column="0" Clicked="ClearQRValuesInRowButtonClicked"/>
-                <Button Text="送信"       Style="{StaticResource ButtonStyle}" TextColor="Black" BorderColor="Black" Grid.Row="0" Grid.Column="1" />
+                <Button Text="送信"       Style="{StaticResource ButtonStyle}" TextColor="Black" BorderColor="Black" Grid.Row="0" Grid.Column="1"  Clicked="SendQRValuesInRowButtonClicked"/>
             </Grid>
         </StackLayout>
     </VerticalStackLayout>
