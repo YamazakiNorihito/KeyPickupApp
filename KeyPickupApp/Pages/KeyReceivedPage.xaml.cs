@@ -5,8 +5,6 @@ namespace KeyPickupApp.Pages;
 public partial class KeyReceivedPage : ContentPage
 {
     private static int QR_GIRD_MAX_ROW = 100;
-
-    private readonly GridLength RowDefinition_Height;
     private List<Entry> _qrEntries = new List<Entry>();
 
     public KeyReceivedPage()
@@ -14,13 +12,12 @@ public partial class KeyReceivedPage : ContentPage
 		InitializeComponent();
 
         // Styleでいい感じにやる方法がわからなかったのでコードで頑張った
-        var rowDefinitionStyle = (Style)Resources["RowDefinitionStyle"];
-        var height = rowDefinitionStyle.Setters.Where(o => o.Property.Equals(nameof(RowDefinition.Height))).SingleOrDefault();
-        RowDefinition_Height = new GridLength(height is null ? 40 : Convert.ToInt32(height.Value));
+        var heightStyle = GetRowDefinitionStyle();
+        var rowDefinition_Height = new GridLength(heightStyle is null ? 40 : Convert.ToInt32(heightStyle.Value));
 
         for (var i = 0; i < QR_GIRD_MAX_ROW; i++)
         {
-            qrGrid.RowDefinitions.Add(new RowDefinition { Height = RowDefinition_Height });
+            qrGrid.RowDefinitions.Add(new RowDefinition { Height = rowDefinition_Height });
 
             var label = new Label { Text = "QRコード", Style = (Style)Resources["LabelFontStyle"] };
             var entry = new Entry { Text = $"{qrGrid.RowDefinitions.Count}行2列目" };
@@ -45,14 +42,26 @@ public partial class KeyReceivedPage : ContentPage
             verticalStackLayout.IsEnabled = false;
             activityIndicator.IsRunning = true;
 
-            var qrCodes = _qrEntries.Select(o => o.Text);
-
-            await Task.Delay(5000);
+            var qrCodes = _qrEntries.Select(o => o.Text).Distinct();
+            var failQrCode = qrCodes.ToList();
+            ClearQRValuesInRowButtonClicked(null, null);
+            
+            for(var i = 0; i < failQrCode.Count;i++)
+            {
+                _qrEntries[i].Text = failQrCode[i];
+            }
             await this.ShowPopupAsync(new KeyReceivedResultPopup(10, 20));
         }finally
         {
             activityIndicator.IsRunning = !activityIndicator.IsRunning;
             verticalStackLayout.IsEnabled = !verticalStackLayout.IsEnabled;
         }
+    }
+
+    private Setter GetRowDefinitionStyle()
+    {
+        var rowDefinitionStyle = (Style)Resources["RowDefinitionStyle"];
+        var height = rowDefinitionStyle.Setters.Where(o => o.Property.Equals(nameof(RowDefinition.Height))).SingleOrDefault();
+        return height;
     }
 }
