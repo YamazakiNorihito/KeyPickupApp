@@ -1,15 +1,26 @@
 using CommunityToolkit.Maui.Views;
+using KeyPickupApp.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace KeyPickupApp.Pages;
 
 public partial class KeyReceivedPage : ContentPage
 {
     private static int QR_GIRD_MAX_ROW = 100;
+
+    private IConfiguration _configuration;
+    private IReceivingSytemService _receivingSytemService;
+
+
+
     private List<Entry> _qrEntries = new List<Entry>();
 
-    public KeyReceivedPage()
+    public KeyReceivedPage(IConfiguration configuration, IReceivingSytemService receivingSytemService)
 	{
-		InitializeComponent();
+        _configuration = configuration;
+        _receivingSytemService = receivingSytemService;
+
+        InitializeComponent();
 
         // Styleでいい感じにやる方法がわからなかったのでコードで頑張った
         var heightStyle = GetRowDefinitionStyle();
@@ -20,7 +31,7 @@ public partial class KeyReceivedPage : ContentPage
             qrGrid.RowDefinitions.Add(new RowDefinition { Height = rowDefinition_Height });
 
             var label = new Label { Text = "QRコード", Style = (Style)Resources["LabelFontStyle"] };
-            var entry = new Entry { Text = $"{qrGrid.RowDefinitions.Count}行2列目" };
+            var entry = new Entry();
 
             qrGrid.Add(label, 0, qrGrid.RowDefinitions.Count - 1);
             qrGrid.Add(entry, 1, qrGrid.RowDefinitions.Count - 1);
