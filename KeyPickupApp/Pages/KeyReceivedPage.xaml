@@ -72,9 +72,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
                 <Button Text="入力クリア" Style="{StaticResource ButtonStyle}" TextColor="Red" BorderColor="Red" Grid.Row="0" Grid.Column="0" Clicked="ClearQRValuesInRowButtonClicked"/>
                 <Button Text="送信"       Style="{StaticResource ButtonStyle}" TextColor="Black" BorderColor="Black" Grid.Row="0" Grid.Column="1"  Clicked="SendQRValuesInRowButtonClicked"/>
+                <Button Text="CSV Import" Style="{StaticResource ButtonStyle}" TextColor="Green" BorderColor="Green" Grid.Row="0" Grid.Column="2"  Clicked="CsvImportClicked"/>
             </Grid>
         </StackLayout>
     </VerticalStackLayout>
