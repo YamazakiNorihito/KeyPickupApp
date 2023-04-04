@@ -20,6 +20,8 @@ public partial class KeyReceivedPage : ContentPage
 	{
         InitializeComponent();
 
+        //SetEnableDeveloperMode();
+
         _receivingSytemService = Services.ServiceProvider.GetService<IReceivingSytemService>();
 
         // Styleでいい感じにやる方法がわからなかったのでコードで頑張った
@@ -119,6 +121,11 @@ public partial class KeyReceivedPage : ContentPage
         ClearQRValuesInRowButtonClicked(null, null);
 
         SetQrCodes(qrCodes);
+    }
+    private void OnTapGestureRecognizerTapped(object sender, EventArgs e)
+    {
+        DeveloperStackLayout.IsVisible = !DeveloperStackLayout.IsVisible;
+        DeveloperStackLayout.IsEnabled = !DeveloperStackLayout.IsEnabled;
     }
 
     private List<string> GetQrCodes() => _qrEntries.Where(o => !string.IsNullOrWhiteSpace(o.Text)).Select(o => o.Text).Distinct().ToList();
