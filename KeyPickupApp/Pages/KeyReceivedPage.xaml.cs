@@ -1,15 +1,22 @@
 using CommunityToolkit.Maui.Views;
+using KeyPickupApp.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace KeyPickupApp.Pages;
 
 public partial class KeyReceivedPage : ContentPage
 {
     private static int QR_GIRD_MAX_ROW = 100;
+
+    private readonly IReceivingSytemService _receivingSytemService;
+
     private List<Entry> _qrEntries = new List<Entry>();
 
     public KeyReceivedPage()
 	{
-		InitializeComponent();
+        InitializeComponent();
+
+        _receivingSytemService = Services.ServiceProvider.GetService<IReceivingSytemService>();
 
         // Styleでいい感じにやる方法がわからなかったのでコードで頑張った
         var heightStyle = GetRowDefinitionStyle();
@@ -20,7 +27,7 @@ public partial class KeyReceivedPage : ContentPage
             qrGrid.RowDefinitions.Add(new RowDefinition { Height = rowDefinition_Height });
 
             var label = new Label { Text = "QRコード", Style = (Style)Resources["LabelFontStyle"] };
-            var entry = new Entry { Text = $"{qrGrid.RowDefinitions.Count}行2列目" };
+            var entry = new Entry();
 
             qrGrid.Add(label, 0, qrGrid.RowDefinitions.Count - 1);
             qrGrid.Add(entry, 1, qrGrid.RowDefinitions.Count - 1);
@@ -42,15 +49,23 @@ public partial class KeyReceivedPage : ContentPage
             verticalStackLayout.IsEnabled = false;
             activityIndicator.IsRunning = true;
 
-            var qrCodes = _qrEntries.Select(o => o.Text).Distinct();
-            var failQrCode = qrCodes.ToList();
-            ClearQRValuesInRowButtonClicked(null, null);
-            
-            for(var i = 0; i < failQrCode.Count;i++)
+            var qrCodes = GetQrCodes();
+
+            var failQrCodes = new List<string>();
+            foreach (var qrCode in qrCodes)
             {
-                _qrEntries[i].Text = failQrCode[i];
+                var result = await _receivingSytemService.TakeReturnKeyAsync(qrCode);
+
+                if (result.ReceivingSytemRequestStatus != ReceivingSytemStatus.Success)
+                    failQrCodes.Add(qrCode);
             }
-            await this.ShowPopupAsync(new KeyReceivedResultPopup(10, 20));
+
+            ClearQRValuesInRowButtonClicked(null, null);
+
+            SetQrCodes(failQrCodes);
+
+            await this.ShowPopupAsync(new KeyReceivedResultPopup(failQrCodes.Count, (qrCodes.Count - failQrCodes.Count)));
+
         }finally
         {
             activityIndicator.IsRunning = !activityIndicator.IsRunning;
@@ -58,10 +73,19 @@ public partial class KeyReceivedPage : ContentPage
         }
     }
 
+    private List<string> GetQrCodes() => _qrEntries.Where(o => !string.IsNullOrWhiteSpace(o.Text)).Select(o => o.Text).Distinct().ToList();
+
+    private void SetQrCodes(List<string> qrCodes)
+    {
+        for (var i = 0; i < qrCodes.Count; i++)
+        {
+            _qrEntries[i].Text = qrCodes[i];
+        }
+    }
+
     private Setter GetRowDefinitionStyle()
     {
         var rowDefinitionStyle = (Style)Resources["RowDefinitionStyle"];
-        var height = rowDefinitionStyle.Setters.Where(o => o.Property.Equals(nameof(RowDefinition.Height))).SingleOrDefault();
-        return height;
+        return rowDefinitionStyle.Setters.Where(o => o.Property.Equals(nameof(RowDefinition.Height))).SingleOrDefault();
     }
 }
