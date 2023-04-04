@@ -2,21 +2,21 @@
 
 public interface IReceivingSytemService
 {
-    Task<ReceivingSytemResult> SendBarcodeAsync(string secret, string barcodeValue);
+    Task<ReceivingSytemResult> TakeReturnKeyAsync(string barcodeValue);
 }
 
 public class ReceivingSytemResult
 {
-    public ReceivingSytemRequestStatus ReceivingSytemRequestStatus { get; }
+    public ReceivingSytemStatus ReceivingSytemRequestStatus { get; }
     public string Message { get; }
 
-    public ReceivingSytemResult(ReceivingSytemRequestStatus receivingSytemRequestStatus, string message)
+    public ReceivingSytemResult(ReceivingSytemStatus receivingSytemRequestStatus, string message)
         => (ReceivingSytemRequestStatus, Message) = (receivingSytemRequestStatus, message);
 }
 
-
-public enum ReceivingSytemRequestStatus
+public enum ReceivingSytemStatus
 {
     Success,
-    Failure
+    Failure,
+    Exception
 }
