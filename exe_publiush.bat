@@ -1,0 +1,1 @@
+msbuild .\KeyPickupApp.sln /restore /t:build /p:Configuration=Release /p:Platform="Any CPU" /p:TargetFramework=net6.0-windows10.0.19041 /p:WindowsAppSDKSelfContained=true /p:WindowsPackageType=None /p:RuntimeIdentifier=win10-x64

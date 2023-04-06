@@ -57,22 +57,22 @@ public partial class KeyReceivedPage : ContentPage
 
             var qrCodes = GetQrCodes();
 
-            var failQrCodes = new List<string>();
-            foreach (var qrCode in qrCodes)
+            int failCount = 0;
+            for (int i = 0; i < qrCodes.Count; i++)
             {
-                var result = await _receivingSytemService.TakeReturnKeyAsync(qrCode);
+                var result = await _receivingSytemService.TakeReturnKeyAsync(qrCodes[i]);
 
                 if (result.ReceivingSytemRequestStatus != ReceivingSytemStatus.Success)
-                    failQrCodes.Add(qrCode);
+                    failCount++;
             }
 
             ClearQRValuesInRowButtonClicked(null, null);
 
-            SetQrCodes(failQrCodes);
+            SetQrCodes(qrCodes.Skip(qrCodes.Count - failCount).ToList());
 
-            await this.ShowPopupAsync(new KeyReceivedResultPopup(failQrCodes.Count, (qrCodes.Count - failQrCodes.Count)));
-
-        }finally
+            await this.ShowPopupAsync(new KeyReceivedResultPopup(failCount, (qrCodes.Count - failCount)));
+        }
+        finally
         {
             activityIndicator.IsRunning = !activityIndicator.IsRunning;
             verticalStackLayout.IsEnabled = !verticalStackLayout.IsEnabled;

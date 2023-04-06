@@ -1,10 +1,17 @@
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               CanBeDismissedByTappingOutsideOfPopup ="False"
                x:Class="KeyPickupApp.Pages.KeyReceivedResultPopup">
     <VerticalStackLayout BackgroundColor="White" HeightRequest="200" WidthRequest="600"  VerticalOptions="Center" HorizontalOptions="Center">
-
-        <Grid Margin="20,50,20,20"  RowSpacing="10" ColumnSpacing="10">
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Image Source="cancel.png" HeightRequest="25" WidthRequest="25" HorizontalOptions="End" VerticalOptions="Start">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ClosePopup"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+        <Grid Margin="20,30,20,20"  RowSpacing="10" ColumnSpacing="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
